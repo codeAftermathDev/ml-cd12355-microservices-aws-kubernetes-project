@@ -16,9 +16,9 @@ phases:
   build:
     commands:
       - echo Fetching python base image
-      - docker pull $IMAGE_NAME:$IMAGE_VER
-      - docker tag $IMAGE_NAME:$IMAGE_VER $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/base-images/$IMAGE_NAME:$IMAGE_VER
+      - docker pull --platform=linux/$IMAGE_PLATFORM $IMAGE_NAME:$IMAGE_VER
+      - docker tag $IMAGE_NAME:$IMAGE_VER $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/base-images/$IMAGE_NAME:$IMAGE_VER-$IMAGE_PLATFORM
   post_build:
     commands:
       - echo Pushing base image to private AWS ECR
-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/base-images/$IMAGE_NAME:$IMAGE_VER
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/base-images/$IMAGE_NAME:$IMAGE_VER-$IMAGE_PLATFORM
