@@ -10,10 +10,15 @@ phases:
       - echo Starting build at `date`
       - echo Building the Docker image...
       - pushd ./analytics
-      - docker buildx build --platform linux/arm64 --build-arg AWS_ACCOUNT_ID=$AWS_ACCOUNT_ID --build-arg AWS_REGION=$AWS_DEFAULT_REGION -t $IMAGE_REPO_NAME:$CODEBUILD_BUILD_NUMBER-arm64 .
-      - docker tag $IMAGE_REPO_NAME:$CODEBUILD_BUILD_NUMBER-arm64 $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:0.0.$CODEBUILD_BUILD_NUMBER-arm64
-  post_build:
-    commands:
-      - echo Completed build at `date`
-      - echo Pushing the Docker image...
-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:0.0.$CODEBUILD_BUILD_NUMBER-arm64
+      - | 
+        docker buildx build --platform linux/arm64 \
+          --build-arg AWS_ACCOUNT_ID=$AWS_ACCOUNT_ID \
+          --build-arg AWS_REGION=$AWS_DEFAULT_REGION \
+          --no-cache \
+          -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:0.0.$CODEBUILD_BUILD_NUMBER-arm64 --push .
+      # - docker tag $IMAGE_REPO_NAME:$CODEBUILD_BUILD_NUMBER-arm64 $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:0.0.$CODEBUILD_BUILD_NUMBER-arm64
+  # post_build:
+  #   commands:
+  #     - echo Completed build at `date`
+  #     - echo Pushing the Docker image...
+  #     - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:0.0.$CODEBUILD_BUILD_NUMBER
