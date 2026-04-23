@@ -1,0 +1,24 @@
+version: 0.2
+
+env:
+  variables:
+    IMAGE_REPO_NAME: base-images
+    IMAGE_NAME: python
+    IMAGE_VER: 3.14.4-slim
+    IMAGE_PLATFORM: arm64
+    AWS_DEFAULT_REGION: us-east-1
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging into ECR
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+  build:
+    commands:
+      - echo Fetching python base image
+      - docker pull --platform linux/$IMAGE_PLATFORM $IMAGE_NAME:$IMAGE_VER
+      - docker tag $IMAGE_NAME:$IMAGE_VER $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/base-images/$IMAGE_NAME:$IMAGE_VER-$IMAGE_PLATFORM
+  post_build:
+    commands:
+      - echo Pushing base image to private AWS ECR
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/base-images/$IMAGE_NAME:$IMAGE_VER-$IMAGE_PLATFORM
