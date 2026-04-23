@@ -8,9 +8,11 @@
 #       -t app .
 
 #FROM python:3.14.4-slim
+
 ARG AWS_ACCOUNT_ID
 ARG AWS_REGION=us-east-1
-FROM --platform=linux/arm64 ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/base-images/python:3.14.4-slim-arm64
+FROM ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/base-images/python:3.14.4-slim
+# FROM --platform=linux/arm64 ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/base-images/python:3.14.4-slim-arm64
 
 RUN apt update && apt upgrade -y && apt install -y build-essential libpq-dev
 
