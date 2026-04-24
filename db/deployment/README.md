@@ -47,11 +47,11 @@ PASSWORD="$DB_PASSWORD" psql --host 127.0.0.1 -U udacity -d udacity -p 5433
 \q              # quit psql 
 ```
 
-## Analytics App
+## Connecting Coworking Analytics App to Postgresql
 
 **NOTE**: Updated app dependency versions to the latest at this moment to support Python 3.14.x
 
-```
+```sh
 # Install app dependencies
 apt install build-essential libpq-dev # Needed by python dependencies
 pip install -r requirements.txt

@@ -16,7 +16,7 @@ spec:
         image: postgres:16 # Pinned to version 16. Deployment fails for latest tag version.
         env:
         - name: POSTGRES_DB
-          value: udacity_db
+          value: udacity
         - name: POSTGRES_USER
           value: udacity
         - name: POSTGRES_PASSWORD
